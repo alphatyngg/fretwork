@@ -21,3 +21,14 @@ const state = {
 console.log(NOTE_NAMES);
 console.log(SCALES);
 console.log(state);
+
+function getScale(scaleId) {
+    return SCALES.find(s => s.id === scaleId);
+}
+
+function getScaleNotes(root, scaleId) {
+    const scale = getScale(scaleId);
+    return scale.intervals.map(interval => (root + interval) % 12);
+}
+
+console.log(getScaleNotes(state.root, state.scaleId));
