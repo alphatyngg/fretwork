@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset=""UTF-8" />
+        <meta name="viewport" content="width=device-width", initial-scale="1.0" />
+
+        <title>Fretwork - guitar practice companion</title>
+    </head>
+
+    <body>
+        <header>
+            <h1>Fretwork</h1>
+            <p>guitar practice companion</p>
+        </header>
+        
+        <section>
+            <h2>Root note</h2>
+            <div id="rootPicker">
+                
+            </div>
+        </section>
+
+        <section>
+            <h2>Scale</h2>
+            <select id="scaleSelect">
+
+            </select>
+        </section>
+
+        <section>
+            <h2>Fretboard</h2>
+            <svg id="fretboard" width="800" height="300"></svg>
+        </section>
+
+        <section>
+            <h2>Metronome</h2>
+            <p>BPM: <span id="bpmValue">100</span></p>
+            <input type="range" id="bpmSlider" min="30" max="240" value="100" />
+            <button id="playTOggle">Start</button>
+        </section>
+    </body>
+
+</html>
