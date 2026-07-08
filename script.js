@@ -78,6 +78,8 @@ function wireRootButtons() {
     buttons.forEach((btn, index) => {
         btn.addEventListener("click", () => {
             state.root = index;
+            buttons.forEach(b => b.setAttribute("aria-pressed", "false"));
+            btn.setAttribute("aria-pressed", "true");
             buildFretboard();
         });
     });
