@@ -72,3 +72,24 @@ function buildFretboard() {
 }
 
 buildFretboard();
+
+function wireRootButtons() {
+    const buttons = document.querySelectorAll("#rootPicker button");
+    buttons.forEach((btn, index) => {
+        btn.addEventListener("click", () => {
+            state.root = index;
+            buildFretboard();
+        });
+    });
+}
+
+function wireScaleSelect() {
+    const select = document.getElementById("scaleSelect");
+    select.addEventListener("change", () => {
+        state.scaleId = select.value;
+        buildFretboard();
+    });
+}
+
+wireRootButtons();
+wireScaleSelect();
