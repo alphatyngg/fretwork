@@ -93,5 +93,18 @@ function wireScaleSelect() {
     });
 }
 
+function wireLabelMode() {
+    const buttons = document.querySelectorAll("#labelMode button");
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            buttons.forEach(b => b.setAttribute("aria-pressed", "false"));
+            btn.setAttribute("aria-pressed", "true");
+            state.labelMode = btn.dataset.mode;
+            buildFretboard();
+        });
+    });
+}
+
 wireRootButtons();
 wireScaleSelect();
+wireLabelMode();
