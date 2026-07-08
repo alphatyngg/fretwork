@@ -63,10 +63,33 @@ function buildFretboard() {
             const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
             circle.setAttribute("cx", x);
             circle.setAttribute("cy", y);
-            circle.setAttribute("r", 4);
+            circle.setAttribute("r", isInScale ? 9 : 4);
             circle.setAttribute("fill", isRoot ? "orange" : isInScale ? "teal" : "lightgray");
 
             svg.appendChild(circle);
+
+            if (isInScale) {
+                const degreeIndex = scaleNotes.indexOf(note);
+                const interval = (note - state.root + 12) % 12;
+
+                let labelText;
+                if (state.labelMode === "name") {
+                    labelText = NOTE_NAMES[note];
+                } else if (state.labelMode === "degree") {
+                    labelText = String(degreeIndex + 1);
+                } else {
+                    labelText = String(interval);
+                }
+
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute("x", x);
+                text.setAttribute("y", y + 3);
+                text.setAttribute("text-anchor", "middle");
+                text.setAttribute("font-size", "8");
+                text.setAttribute("fill", "white");
+                text.textContent = labelText;
+                svg.appendChild(text);
+            }
         }
     });
 }
