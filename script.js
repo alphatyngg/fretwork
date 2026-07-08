@@ -32,3 +32,31 @@ function getScaleNotes(root, scaleId) {
 }
 
 console.log(getScaleNotes(state.root, state.scaleId));
+
+const NUM_FRETS = 15;
+const FRET_WIDTH = 50;
+const STRING_SPACING = 30;
+const SVG_PADDING = 30;
+
+function buildFretboard() {
+    const svg = document.getElementById("fretboard");
+    svg.innerHTML = "";             // clears anythinf already drawn
+
+
+    STRINGS.forEach((stringName, stringIndex) => {
+        for (let fret = 0; fret <= NUM_FRETS; fret++) {
+            const x = SVG_PADDING + fret * FRET_WIDTH;
+            const y = SVG_PADDING + stringIndex * STRING_SPACING;
+
+            const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle.setAttribute("cx", x);
+            circle.setAttribute("cy", y);
+            circle.setAttribute("r", 4);
+            circle.setAttribute("fill", "gray");
+
+            svg.appendChild(circle);
+        }
+    });
+}
+
+buildFretboard();
