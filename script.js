@@ -213,6 +213,30 @@ function wireBpmControls() {
     upBtn.addEventListener("click", () => setBpm(metro.bpm + 1));
 }
 
+function wireTapTempo() {
+    const btn = document.getElementById("tapTempo");
+    let tapTimes = [];
+
+    btn.addEventListener("click", () => {
+        const now = Date.now();
+        if (tapTimes.length && now - tapTimes[tapTimes.length - 1] > 2000) {
+            tapTimes = [];              // resets if long pause
+        }
+        tapTimes.push(now);
+        if (tapTimes.length > 5) {
+            tapTimes.shift();
+        }
+        if (tapTimes.length >= 2) {
+            const gaps = [];
+            for (let i = 1; i < tapTimes.length; i++) {
+                gaps.push(tapTimes[i] - tapTimes[i - 1]);
+            }
+            const avgGap = gaps.reduce((a, b) => a + b, 0) / gaps.length;
+            setBpm(Math.round(60000 / avgGap));
+        }
+    });
+}
+
 function buildBeatLeds() {
     const wrap = document.getElementById("beatLeds");
     wrap.innerHTML = "";
@@ -305,5 +329,6 @@ wireLabelMode();
 wireBpmControls();
 wirePlayToggle();
 wireMeterSelect();
+wireTapTempo();
 buildBeatLeds();
 setBpm(metro.bpm);
