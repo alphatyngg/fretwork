@@ -171,6 +171,8 @@ function wireLabelMode() {
 
 const metro = {
     bpm: 100,
+    beatsPerMeasure: 4,
+    currentBeat: 0,
     isPlaying: false
 };
 
@@ -211,37 +213,68 @@ function wireBpmControls() {
     upBtn.addEventListener("click", () => setBpm(metro.bpm + 1));
 }
 
+function buildBeatLeds() {
+    const wrap = document.getElementById("beatLeds");
+    wrap.innerHTML = "";
+    for (let i = 0; i < metro.beatsPerMeasure; i++) {
+        const led = document.createElement("div");
+        led.className = "led";
+        wrap.appendChild(led);
+    }
+}
+
+function lightBeat(beatIndex) {
+    const leds = document.querySelectorAll(".led");
+    leds.forEach((led, i) => {
+        led.classList.toggle("on", i === beatIndex);
+    });
+}
+
+function wireMeterSelect() {
+    const select = document.getElementById("meterSelect");
+    select.addEventListener("change", () => {
+        metro.beatsPerMeasure = parseInt(select.value, 10);
+        buildBeatLeds();
+    });
+}
+
 let nextNoteTime = 0;
 let timerId = null;
 const LOOKAHEAD_MS = 25;                // checking time (ms)
 const SCHEDULE_AHEAD_S = 0.1;           // schedule audio ahead (s)
 
-function scheduleClick(time) {
+function scheduleClick(beatIndex, time) {
     const ctx = ensureAudio();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
+    const isAccent = beatIndex === 0;
 
     osc.type = "square";
-    osc.frequency.value = 1000;
-    gain.gain.setValueAtTime(0.3, time);
+    osc.frequency.value = isAccent ? 1400 : 1000;
+    gain.gain.setValueAtTime(isAccent ? 0.4 : 0.25, time);
     gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.03);
 
     osc.connect(gain).connect(ctx.destination);
     osc.start(time);
     osc.stop(time + 0.04);
+
+    const delayMs = Math.max(0, (time - ctx.currentTime) * 1000);
+    setTimeout(() => lightBeat(beatIndex), delayMs);
 }
 
 function scheduler() {
     const ctx = ensureAudio();
     while (nextNoteTime < ctx.currentTime + SCHEDULE_AHEAD_S) {
-        scheduleClick(nextNoteTime);
+        scheduleClick(metro.currentBeat, nextNoteTime);
         nextNoteTime += 60.0 / metro.bpm;           // secs per beat
+        metro.currentBeat = (metro.currentBeat + 1) % metro.beatsPerMeasure;
     }
 }
 
 function startMetronome() {
     const ctx = ensureAudio();
     metro.isPlaying = true;
+    metro.currentBeat = 0;
     nextNoteTime = ctx.currentTime + 0.05;
     timerId = setInterval(scheduler, LOOKAHEAD_MS);
 }
@@ -250,6 +283,7 @@ function stopMetronome() {
     metro.isPlaying = false;
     clearInterval(timerId);
     timerId = null;
+    document.querySelectorAll(".led").forEach(l => l.classList.remove("on"));
 }
 
 function wirePlayToggle() {
@@ -270,4 +304,6 @@ wireScaleSelect();
 wireLabelMode();
 wireBpmControls();
 wirePlayToggle();
+wireMeterSelect();
+buildBeatLeds();
 setBpm(metro.bpm);
