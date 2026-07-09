@@ -45,6 +45,46 @@ function getNoteAt(stringIndex, fret) {
     return (OPEN_NOTE[stringIndex] + fret) % 12;
 }
 
+let audioCtx = null;
+
+function ensureAudio() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    } 
+    if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+    }
+    return audioCtx;
+}
+
+function midiToFreq(midi) {
+    return 440 * Math.pow(2, (midi - 69) / 12);
+}
+
+const OPEN_MIDI = [64, 59, 55, 50, 45, 40];         // midi matching [e B G D A E]
+
+function playStringFret(stringIndex, fret){
+    const midi = OPEN_MIDI[stringIndex] + fret;
+    const ctx = ensureAudio();
+    const freq = midiToFreq(midi);
+    const now = ctx.currentTime;
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.3, now + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.0);
+
+    const osc = ctx.createOscillator();
+    osc.type = "triangle";
+    osc.frequency.value = freq;
+
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 1.05);
+}
+
+
+
 function buildFretboard() {
     const svg = document.getElementById("fretboard");
     svg.innerHTML = "";             // clears anything already drawn
@@ -67,6 +107,9 @@ function buildFretboard() {
             circle.setAttribute("fill", isRoot ? "orange" : isInScale ? "teal" : "lightgray");
 
             svg.appendChild(circle);
+
+            circle.style.cursor = "pointer";
+            circle.addEventListener("click", () => playStringFret(stringIndex, fret));
 
             if (isInScale) {
                 const degreeIndex = scaleNotes.indexOf(note);
