@@ -174,10 +174,28 @@ const metro = {
     isPlaying: false
 };
 
+const TEMPO_NAMES = [
+    { max: 45, name: "Larghissimo" },
+    { max: 60, name: "Largo" },
+    { max: 66, name: "Larghetto" },
+    { max: 76, name: "Adagio" },
+    { max: 108, name: "Andante" },
+    { max: 120, name: "Moderato" },
+    { max: 156, name: "Allegro" },
+    { max: 176, name: "Vivace" },
+    { max: 200, name: "Presto" },
+    { max: Infinity, name: "Prestissimo" }
+];
+
+function tempoNameFor(bpm) {
+    return TEMPO_NAMES.find(t => bpm <= t.max).name;
+}
+
 function setBpm(newBpm) {
     metro.bpm = Math.min(240, Math.max(30, newBpm));
     document.getElementById("bpmValue").textContent = metro.bpm;
     document.getElementById("bpmSlider").value = metro.bpm;
+    document.getElementById("tempoName").textContent = tempoNameFor(metro.bpm);
 }
 
 function wireBpmControls() {
