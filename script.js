@@ -83,8 +83,6 @@ function playStringFret(stringIndex, fret){
     osc.stop(now + 1.05);
 }
 
-
-
 function buildFretboard() {
     const svg = document.getElementById("fretboard");
     svg.innerHTML = "";             // clears anything already drawn
@@ -171,6 +169,32 @@ function wireLabelMode() {
     });
 }
 
+const metro = {
+    bpm: 100,
+    isPlaying: false
+};
+
+function setBpm(newBpm) {
+    metro.bpm = Math.min(240, Math.max(30, newBpm));
+    document.getElementById("bpmValue").textContent = metro.bpm;
+    document.getElementById("bpmSlider").value = metro.bpm;
+}
+
+function wireBpmControls() {
+    const slider = document.getElementById("bpmSlider");
+    const downBtn = document.getElementById("bpmDown");
+    const upBtn = document.getElementById("bpmUp");
+
+    slider.addEventListener("input", () => {
+        setBpm(parseInt(slider.value, 10));
+    });
+
+    downBtn.addEventListener("click", () => setBpm(metro.bpm - 1));
+    upBtn.addEventListener("click", () => setBpm(metro.bpm + 1));
+}
+
 wireRootButtons();
 wireScaleSelect();
 wireLabelMode();
+wireBpmControls();
+setBpm(metro.bpm);
