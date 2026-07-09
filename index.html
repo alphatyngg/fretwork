@@ -11,80 +11,83 @@
     </head>
 
     <body>
-        <header>
-            <h1>Fretwork</h1>
-            <p>guitar practice companion</p>
-        </header>
-        
-        <section>
-            <h2>Root note</h2>
-            <div id="rootPicker">
-                <button aria-pressed="true">C</button>
-                <button aria-pressed="false">C#</button>
-                <button aria-pressed="false">D</button>
-                <button aria-pressed="false">D#</button>
-                <button aria-pressed="false">E</button>
-                <button aria-pressed="false">F</button>
-                <button aria-pressed="false">F#</button>
-                <button aria-pressed="false">G</button>
-                <button aria-pressed="false">G#</button>
-                <button aria-pressed="false">A</button>
-                <button aria-pressed="false">A#</button>
-                <button aria-pressed="false">B</button>
-            </div>
-        </section>
+        <div class="page">
+            <header>
+                <h1>Fretwork</h1>
+                <p>guitar practice companion</p>
+            </header>
+            
+            <section class="panel">
+                <h2>Root note</h2>
+                <div id="rootPicker">
+                    <button aria-pressed="true">C</button>
+                    <button aria-pressed="false">C#</button>
+                    <button aria-pressed="false">D</button>
+                    <button aria-pressed="false">D#</button>
+                    <button aria-pressed="false">E</button>
+                    <button aria-pressed="false">F</button>
+                    <button aria-pressed="false">F#</button>
+                    <button aria-pressed="false">G</button>
+                    <button aria-pressed="false">G#</button>
+                    <button aria-pressed="false">A</button>
+                    <button aria-pressed="false">A#</button>
+                    <button aria-pressed="false">B</button>
+                </div>
+            </section>
 
-        <section>
-            <h2>Scale</h2>
-            <select id="scaleSelect">
-                <option value="major">Major</option>
-                <option value="minor">Natural Minor</option>
-                <option value="major_pentatonic">Major Pentatonic</option>
-                <option value="minor_pentatonic">Minor Pentatonic</option>
-                <option value="blues">Blues</option>
-                <option value="dorian">Dorian</option>
-                <option value="mixolydian">Mixolydian</option>
-            </select>
-        </section>
-
-        <section>
-            <h2>Label mode</h2>
-            <div id="labelMode">
-                <button data-mode="name" aria-pressed="true">Note name</button>
-                <button data-mode="degree" aria-pressed="false">Scale degree</button>
-                <button data-mode="interval" aria-pressed="false">Interval</button>
-            </div>
-        </section>
-
-        <section>
-            <h2>Fretboard</h2>
-            <svg id="fretboard" width="800" height="300"></svg>
-        </section>
-
-        <section>
-            <h2>Metronome</h2>
-            <p>Tempo: <span id="bpmValue">100</span> BPM</p>
-            <p id="tempoName">Andante</p>
-
-            <button id="bpmDown">-</button>
-            <input type="range" id="bpmSlider" min="30" max="240" value="100" />
-            <button id="bpmUp">+</button>
-
-            <p>
-                Time Signature:
-                <select id="meterSelect">
-                    <option value="2">2/4</option>
-                    <option value="3">3/4</option>
-                    <option value="4" selected>4/4</option>
-                    <option value="6">6/8</option>
+            <section class="panel">
+                <h2>Scale</h2>
+                <select id="scaleSelect">
+                    <option value="major">Major</option>
+                    <option value="minor">Natural Minor</option>
+                    <option value="major_pentatonic">Major Pentatonic</option>
+                    <option value="minor_pentatonic">Minor Pentatonic</option>
+                    <option value="blues">Blues</option>
+                    <option value="dorian">Dorian</option>
+                    <option value="mixolydian">Mixolydian</option>
                 </select>
-            </p>
+            </section>
 
-            <div id="beatLeds"></div>
+            <section class="panel">
+                <h2>Label mode</h2>
+                <div id="labelMode">
+                    <button data-mode="name" aria-pressed="true">Note name</button>
+                    <button data-mode="degree" aria-pressed="false">Scale degree</button>
+                    <button data-mode="interval" aria-pressed="false">Interval</button>
+                </div>
+            </section>
 
-            <button id="playToggle">Start</button>
-            <button id="tapTempo">Tap Tempo</button>
-        </section>
+            <section class="panel">
+                <h2>Fretboard</h2>
+                <svg id="fretboard" width="800" height="300"></svg>
+            </section>
+
+            <section class="panel">
+                <h2>Metronome</h2>
+                <p>Tempo: <span id="bpmValue">100</span> BPM</p>
+                <p id="tempoName">Andante</p>
+
+                <button id="bpmDown">-</button>
+                <input type="range" id="bpmSlider" min="30" max="240" value="100" />
+                <button id="bpmUp">+</button>
+
+                <p>
+                    Time Signature:
+                    <select id="meterSelect">
+                        <option value="2">2/4</option>
+                        <option value="3">3/4</option>
+                        <option value="4" selected>4/4</option>
+                        <option value="6">6/8</option>
+                    </select>
+                </p>
+
+                <div id="beatLeds"></div>
+
+                <button id="playToggle">Start</button>
+                <button id="tapTempo">Tap Tempo</button>
+            </section>
+
+        </div>
 
         <script src="script.js"></script>
     </body>
