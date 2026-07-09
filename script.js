@@ -193,8 +193,63 @@ function wireBpmControls() {
     upBtn.addEventListener("click", () => setBpm(metro.bpm + 1));
 }
 
+let nextNoteTime = 0;
+let timerId = null;
+const LOOKAHEAD_MS = 25;                // checking time (ms)
+const SCHEDULE_AHEAD_S = 0.1;           // schedule audio ahead (s)
+
+function scheduleClick(time) {
+    const ctx = ensureAudio();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "square";
+    osc.frequency.value = 1000;
+    gain.gain.setValueAtTime(0.3, time);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.03);
+
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(time);
+    osc.stop(time + 0.04);
+}
+
+function scheduler() {
+    const ctx = ensureAudio();
+    while (nextNoteTime < ctx.currentTime + SCHEDULE_AHEAD_S) {
+        scheduleClick(nextNoteTime);
+        nextNoteTime += 60.0 / metro.bpm;           // secs per beat
+    }
+}
+
+function startMetronome() {
+    const ctx = ensureAudio();
+    metro.isPlaying = true;
+    nextNoteTime = ctx.currentTime + 0.05;
+    timerId = setInterval(scheduler, LOOKAHEAD_MS);
+}
+
+function stopMetronome() {
+    metro.isPlaying = false;
+    clearInterval(timerId);
+    timerId = null;
+}
+
+function wirePlayToggle() {
+    const btn = document.getElementById("playToggle");
+    btn.addEventListener("click", () => {
+        if (metro.isPlaying) {
+            stopMetronome();
+            btn.textContent = "Start";
+        } else {
+            startMetronome();
+            btn.textContent = "Stop";
+        }
+    });
+}
+
 wireRootButtons();
 wireScaleSelect();
 wireLabelMode();
 wireBpmControls();
+wirePlayToggle();
 setBpm(metro.bpm);
