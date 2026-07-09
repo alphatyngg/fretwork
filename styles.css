@@ -1,1 +1,18 @@
-/* Style sheet */
+:root {
+    --color-bg: #17120d;
+    --color-surface: #1f1811;
+    --color-surface-2: #261c13;
+
+    --text: #eee6d6;
+    --text-muted: #a4937b;
+
+    --accent-root: #e8a84c;
+    --accent-scale: #64b6a6;
+
+    --border: rgba(233, 226, 208, 0.14);
+    --shadow: rgba(0, 0, 0, 0.45);
+
+    --font-display: 'Georgia', 'Times New Roman', serif;
+    --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Consolas", monospace;
+}
