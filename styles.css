@@ -82,3 +82,34 @@ header p {
     color: var(--text-muted);
     margin: 0;
 }
+
+#rootPicker {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 6px;
+}
+
+#rootPicker button {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-align: center;
+    padding: 9px 0;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--color-surface-2);
+    color: var(--text);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+#rootPicker button:hover:not([aria-pressed="true"]) {
+    transform: translateY(-1px);
+    border-color: var(--accent-root);
+    color: var(--accent-root);
+}
+
+#rootPicker button[aria-pressed="true"] {
+    background: var(--accent-root);
+    border-color: var(--accent-root);
+    color: #17120d;
+}
