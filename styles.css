@@ -113,3 +113,54 @@ header p {
     border-color: var(--accent-root);
     color: #17120d;
 }
+
+select {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--text);
+    background: var(--color-surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 12px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+select:hover {
+    border-color: var(--accent-scale);
+    background: var(--color-surface);
+}
+
+#labelMode {
+    display: inline-flex;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+#labelMode button {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    padding: 8px 14px;
+    background: var(--color-surface-2);
+    color: var(--text-muted);
+    border: none;
+    border-right: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+#labelMode button:last-child {
+    border-right: none;
+}
+
+#labelMode button:hover:not([aria-pressed="true"]) {
+    background: var(--color-surface);
+    color: var(--text);
+}
+
+#labelMode button[aria-pressed="true"] {
+    background: var(--accent-scale);
+    color: #17120d;
+}
