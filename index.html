@@ -18,42 +18,53 @@
             </header>
             
             <section class="panel">
-                <h2>Root note</h2>
-                <div id="rootPicker">
-                    <button aria-pressed="true">C</button>
-                    <button aria-pressed="false">C#</button>
-                    <button aria-pressed="false">D</button>
-                    <button aria-pressed="false">D#</button>
-                    <button aria-pressed="false">E</button>
-                    <button aria-pressed="false">F</button>
-                    <button aria-pressed="false">F#</button>
-                    <button aria-pressed="false">G</button>
-                    <button aria-pressed="false">G#</button>
-                    <button aria-pressed="false">A</button>
-                    <button aria-pressed="false">A#</button>
-                    <button aria-pressed="false">B</button>
-                </div>
-            </section>
+                <h2>Scale &amp; Root </h2>
+                <div class="controls-grid">
+                    <div>
+                        <div class="field">
+                            <label>Root note</label>
+                            <div class="root-picker" id="rootPicker" role="group" aria-label="Root note">
+                                <button class="chip" aria-pressed="true">C</button>
+                                <button class="chip" aria-pressed="false">C#</button>
+                                <button class="chip" aria-pressed="false">D</button>
+                                <button class="chip" aria-pressed="false">D#</button>
+                                <button class="chip" aria-pressed="false">E</button>
+                                <button class="chip" aria-pressed="false">F</button>
+                                <button class="chip" aria-pressed="false">F#</button>
+                                <button class="chip" aria-pressed="false">G</button>
+                                <button class="chip" aria-pressed="false">G#</button>
+                                <button class="chip" aria-pressed="false">A</button>
+                                <button class="chip" aria-pressed="false">A#</button>
+                                <button class="chip" aria-pressed="false">B</button>
+                            </div>
+                        </div>
+                    </div>
 
-            <section class="panel">
-                <h2>Scale</h2>
-                <select id="scaleSelect">
-                    <option value="major">Major</option>
-                    <option value="minor">Natural Minor</option>
-                    <option value="major_pentatonic">Major Pentatonic</option>
-                    <option value="minor_pentatonic">Minor Pentatonic</option>
-                    <option value="blues">Blues</option>
-                    <option value="dorian">Dorian</option>
-                    <option value="mixolydian">Mixolydian</option>
-                </select>
-            </section>
+                    <div>
+                        <div class="field">
+                            <label for="scaleSelect">Scale / mode</label>
+                            <div class="select-wrap">
+                                <select id="scaleSelect">
+                                    <option value="major">Major</option>
+                                    <option value="minor">Natural Minor</option>
+                                    <option value="major_pentatonic">Major Pentatonic</option>
+                                    <option value="minor_pentatonic">Minor Pentatonic</option>
+                                    <option value="blues">Blues</option>
+                                    <option value="dorian">Dorian</option>
+                                    <option value="mixolydian">Mixolydian</option>
+                                </select>
+                            </div>
+                        </div>
 
-            <section class="panel">
-                <h2>Label mode</h2>
-                <div id="labelMode">
-                    <button data-mode="name" aria-pressed="true">Note name</button>
-                    <button data-mode="degree" aria-pressed="false">Scale degree</button>
-                    <button data-mode="interval" aria-pressed="false">Interval</button>
+                        <div class="field">
+                            <label>Fretboard labels</label>
+                            <div class="segmented" id="labelMode" role="group" aria-label="Label mode">
+                                <button data-mode="name" aria-pressed="true">Notes</button>
+                                <button data-mode="degree" aria-pressed="false">Degrees</button>
+                                <button data-mode="interval" aria-pressed="false">Intervals</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
