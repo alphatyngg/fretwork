@@ -164,3 +164,25 @@ select:hover {
     background: var(--accent-scale);
     color: #17120d;
 }
+
+.fretboard-wrap {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+#fretboard {
+    display: block;
+}
+
+#fretboard circle {
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
+#fretboard circle:hover {
+    transform: scale(1.15);
+}
+
