@@ -83,13 +83,56 @@ header p {
     margin: 0;
 }
 
-#rootPicker {
+.controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.field:last-child {
+    margin-bottom: 0;
+}
+
+.field label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.select-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+.select-wrap::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 13px;
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid var(--text-muted);
+    border-bottom: 2px solid var(--text-muted);
+    transform: translateY(-65%) rotate(45deg);
+    pointer-events: none;
+}
+
+.root-picker {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: 6px;
 }
 
-#rootPicker button {
+.chip {
     font-family: var(--font-mono);
     font-size: 13px;
     text-align: center;
@@ -102,13 +145,13 @@ header p {
     transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
 }
 
-#rootPicker button:hover:not([aria-pressed="true"]) {
+.chip:hover:not([aria-pressed="true"]) {
     transform: translateY(-1px);
     border-color: var(--accent-root);
     color: var(--accent-root);
 }
 
-#rootPicker button[aria-pressed="true"] {
+.chip[aria-pressed="true"] {
     background: var(--accent-root);
     border-color: var(--accent-root);
     color: #17120d;
@@ -121,7 +164,9 @@ select {
     background: var(--color-surface-2);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 9px 12px;
+    padding: 9px 36px 9px 12px;
+    width: 100%;
+    appearance: none;
     cursor: pointer;
     transition: border-color 0.15s ease, background 0.15s ease;
 }
@@ -131,14 +176,15 @@ select:hover {
     background: var(--color-surface);
 }
 
-#labelMode {
+.segmented {
     display: inline-flex;
     border: 1px solid var(--border);
     border-radius: 6px;
     overflow: hidden;
+    width: fit-content;
 }
 
-#labelMode button {
+.segmented button {
     font-family: var(--font-mono);
     font-size: 12px;
     letter-spacing: 0.04em;
@@ -151,16 +197,16 @@ select:hover {
     transition: background 0.15s ease, color 0.15s ease;
 }
 
-#labelMode button:last-child {
+.segmented button:last-child {
     border-right: none;
 }
 
-#labelMode button:hover:not([aria-pressed="true"]) {
+.segmented button:hover:not([aria-pressed="true"]) {
     background: var(--color-surface);
     color: var(--text);
 }
 
-#labelMode button[aria-pressed="true"] {
+.segmented button[aria-pressed="true"] {
     background: var(--accent-scale);
     color: #17120d;
 }
