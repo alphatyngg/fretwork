@@ -77,27 +77,39 @@
 
             <section class="panel">
                 <h2>Metronome</h2>
-                <p>Tempo: <span id="bpmValue">100</span> BPM</p>
-                <p id="tempoName">Andante</p>
+                <div class="metronome-body">
+                    <div class="tempo-readout">
+                        <div class="bpm-value" id="bpmValue">100</div>
+                        <div class="tempo-name" id="tempoName">Andante</div>
+                        <div class="bpm-label">BEATS / MIN</div>
+                        <div class="tempo-adjust">
+                            <button class="step-btn" id="bpmDown" aria-label="Decrease tempo">&minus;</button>
+                            <input type="range" id="bpmSlider" min="30" max="240" value="100" />
+                            <button class="step-btn" id="bpmUp" aria-label="Increase tempo">&plus;</button>
+                        </div>
+                    </div>
 
-                <button id="bpmDown">-</button>
-                <input type="range" id="bpmSlider" min="30" max="240" value="100" />
-                <button id="bpmUp">+</button>
+                    <div class="transport">
+                        <div class="transport-buttons">
+                            <button id="playToggle" aria-pressed="false">Start</button>
+                            <button class="tap-btn" id="tapTempo">Tap Tempo</button>
+                        </div>
+                        <div class="beat-leds" id="beatLeds"></div>
+                    </div>
 
-                <p>
-                    Time Signature:
-                    <select id="meterSelect">
-                        <option value="2">2/4</option>
-                        <option value="3">3/4</option>
-                        <option value="4" selected>4/4</option>
-                        <option value="6">6/8</option>
-                    </select>
-                </p>
-
-                <div id="beatLeds"></div>
-
-                <button id="playToggle">Start</button>
-                <button id="tapTempo">Tap Tempo</button>
+                    <div class="meter-select">
+                        <label for="meterSelect">Beats / Bar</label>
+                        <div class="select-wrap">
+                            <select id="meterSelect">
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4" selected>4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </section>
 
         </div>
