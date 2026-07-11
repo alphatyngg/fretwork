@@ -186,3 +186,89 @@ select:hover {
     transform: scale(1.15);
 }
 
+#bpmValue {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--accent-root);
+}
+
+#tempoName {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--accent-scale);
+    margin: 0 0 12px 0;
+}
+
+#bpmDown, #bpmUp {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--color-surface-2);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+#bpmDown:hover, #bpmUp:hover {
+  border-color: var(--accent-root);
+  color: var(--accent-root);
+  transform: scale(1.1);
+}
+
+input[type="range"] {
+  accent-color: var(--accent-glow, var(--accent-root));
+  cursor: pointer;
+}
+
+#playToggle, #tapTempo {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 12px 18px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--color-surface-2);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
+}
+
+#playToggle:hover, #tapTempo:hover {
+  border-color: var(--accent-scale);
+  color: var(--accent-scale);
+}
+
+#playToggle[aria-pressed="true"] {
+  background: var(--accent-root);
+  border-color: var(--accent-root);
+  color: #17120d;
+}
+
+#beatLeds {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.led {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-surface-2);
+  border: 1px solid var(--border);
+  transition: background 0.05s ease, box-shadow 0.05s ease;
+}
+
+.led.on {
+    background: var(--accent-scale);
+    box-shadow: 0 0 10px var(--accent-scale);
+}
+

@@ -316,9 +316,11 @@ function wirePlayToggle() {
         if (metro.isPlaying) {
             stopMetronome();
             btn.textContent = "Start";
+            btn.setAttribute("aria-pressed", "false");
         } else {
             startMetronome();
             btn.textContent = "Stop";
+            btn.setAttribute("aria-pressed", "true");
         }
     });
 }
