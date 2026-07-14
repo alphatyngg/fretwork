@@ -7,14 +7,21 @@
 
         <title>Fretwork - Guitar Practice Companion</title>
 
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+        
         <link rel="stylesheet" href="styles.css" />
     </head>
 
     <body>
         <div class="page">
-            <header>
-                <h1>Fretwork</h1>
-                <p>Guitar Practice Companion</p>
+            <header class="badge">
+                <div>
+                    <h1>Fretwork</h1>
+                    <div class="tagline">Guitar Fretboard &middot; Scales &middot; Metronome</div>
+                </div>
+                <div class="tagline" id="tuningLabel">Standard tuning &middot; E A D G B e</div>
             </header>
             
             <section class="panel">
@@ -73,6 +80,12 @@
                 <div class="fretboard-wrap">
                     <svg id="fretboard" width="830" height="210"></svg>
                 </div>
+                
+                <div class="legend">
+                    <span><i class="swatch" style="background: var(--accent-root)"></i> Root</span>
+                    <span><i class="swatch" style="background: var(--accent-scale)"></i> Scale tone</span>
+                    <span>Click any note to hear it</span>
+                </div>
             </section>
 
             <section class="panel">
@@ -112,6 +125,7 @@
                 </div>
             </section>
 
+            <footer class="hint">Runs entirely in your browser - no audio is recorded or sent anywhere.</footer>
         </div>
 
         <script src="script.js"></script>
