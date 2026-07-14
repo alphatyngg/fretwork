@@ -232,24 +232,31 @@ select:hover {
     transform: scale(1.15);
 }
 
-#bpmValue {
+.bpm-value {
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
-    font-size: 48px;
+    font-size: 56px;
     font-weight: 700;
     color: var(--accent-root);
+    line-height: 1;
 }
 
-#tempoName {
+.bpm-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+.tempo-name {
     font-family: var(--font-display);
     font-style: italic;
     font-weight: 600;
     font-size: 15px;
     color: var(--accent-scale);
-    margin: 0 0 12px 0;
 }
 
-#bpmDown, #bpmUp {
+.step-btn {
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -259,10 +266,13 @@ select:hover {
   font-family: var(--font-mono);
   font-size: 15px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 0.12s ease, border-color 0.12s ease, color 0.12s ease;
 }
 
-#bpmDown:hover, #bpmUp:hover {
+.step-btn:hover {
   border-color: var(--accent-root);
   color: var(--accent-root);
   transform: scale(1.1);
@@ -273,7 +283,7 @@ input[type="range"] {
   cursor: pointer;
 }
 
-#playToggle, #tapTempo {
+.transport-buttons button, .tap-btn {
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.08em;
@@ -287,9 +297,13 @@ input[type="range"] {
   transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
 }
 
-#playToggle:hover, #tapTempo:hover {
+.transport-buttons button:hover:not([aria-pressed="true"]), .tap-btn:hover {
   border-color: var(--accent-scale);
   color: var(--accent-scale);
+}
+
+.tap-btn:active, .transport-buttons button:active {
+    transform: translateY(1px);
 }
 
 #playToggle[aria-pressed="true"] {
@@ -298,8 +312,9 @@ input[type="range"] {
   color: #17120d;
 }
 
-#beatLeds {
+.beat-leds {
   display: flex;
+  justify-content: center;
   gap: 8px;
   margin: 12px 0;
 }
@@ -318,3 +333,61 @@ input[type="range"] {
     box-shadow: 0 0 10px var(--accent-scale);
 }
 
+.metronome-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    align-items: center;
+    width: 100%;
+}
+
+.tempo-readout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 2 1 280px;
+}
+
+.tempo-adjust {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.tempo-adjust input[type="range"] {
+    flex: 1;
+}
+
+.transport {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1 1 220px;
+}
+
+.transport-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.transport-buttons button {
+    flex: 1;
+    justify-content: center;
+}
+
+.meter-select {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 0 1 140px;
+}
+
+.meter-select label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
