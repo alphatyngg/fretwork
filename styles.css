@@ -8,6 +8,7 @@
 
     --accent-root: #e8a84c;
     --accent-scale: #64b6a6;
+    --accent-glow: #e2a33d;
 
     --border: rgba(233, 226, 208, 0.14);
     --shadow: rgba(0, 0, 0, 0.45);
@@ -27,36 +28,36 @@ body {
     color: var(--text);
     font-family: var(--font-body);
     line-height: 1.5;
-    padding: 24px;
+    padding: clamp(16px, 4vw, 40px);
 }
 
 .page {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 28px;
 }
 
 .panel {
     background: var(--color-surface);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 20px;
+    padding: clamp(16px, 2.5vw, 26px);
     box-shadow: 0 8px 24px var(--shadow);
 }
 
 .panel h2{
-    font-family: var(--font-mono);
-    font-size: 13px;
+    font-family: var(--font-display);
+    font-size: 15px;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--text-muted);
     margin: 0 0 16px 0;
 }
 
-header {
+header.badge {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -66,21 +67,21 @@ header {
     flex-wrap: wrap;
 }
 
-header h1 {
+header.badge h1 {
     font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 32px;
+    font-weight: 900;
+    font-size: clamp(28px, 4vw, 40px);
     letter-spacing: -0.01em;
     margin: 0;
+    text-wrap: balance;
 }
 
-.tagline {
+header.badge .tagline {
     font-family: var(--font-mono);
     font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-muted);
-    margin: 0;
 }
 
 .controls-grid {
@@ -126,6 +127,11 @@ header h1 {
     pointer-events: none;
 }
 
+select:focus-visible, button:focus-visible, .chip:focus-visible {
+    outline: 2px solid var(--accent-glow);
+    outline-offset: 2px;
+}
+
 .root-picker {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -154,7 +160,7 @@ header h1 {
 .chip[aria-pressed="true"] {
     background: var(--accent-root);
     border-color: var(--accent-root);
-    color: #17120d;
+    color: #fff8ec;
 }
 
 select {
