@@ -16,6 +16,12 @@
     --font-display: 'Archivo', system-ui, -apple-system, "Segoe UI", sans-serif;
     --font-body: 'Archivo', system-ui, -apple-system, "Segoe UI", sans-serif;
     --font-mono: 'Space Mono', ui-monospace, "SF Mono", "Cascadia Code", "Consolas", monospace;
+
+    --wood-1: #4a3020;
+    --wood-2: #2c1c12;
+    --fret-wire: #cdc6b8;
+    --nut: #eee7d6;
+    --string: #e7e0cd;
 }
 
 * {

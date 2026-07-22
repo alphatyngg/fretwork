@@ -109,6 +109,49 @@ function buildFretboard() {
     const scaleNotes = getScaleNotes(state.root, state.scaleId);
     const rowSpan = BOTTOM_Y - TOP_Y;
 
+    const defs = document.createElementNS(SVG_NS, "defs");
+    defs.innerHTML = `<linearGradient id="woodGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--wood-1)"/>
+                      <stop offset="100%" stop-color="var(--wood-2)"/>
+                      </linearGradient>`;
+    svg.appendChild(defs);
+
+    //wood bgd
+    const wood = document.createElementNS(SVG_NS, "rect");
+    wood.setAttribute("x", NUT_X);
+    wood.setAttribute("y", TOP_Y - 14);
+    wood.setAttribute("width", VIEW_W - NUT_X - 20);
+    wood.setAttribute("height", BOTTOM_Y - TOP_Y + 28);
+    wood.setAttribute("rx", 6);
+    wood.setAttribute("fill", "url(#woodGrad)");
+    svg.appendChild(wood);
+
+    //frets
+    for (let i = 0; i <= FRET_COUNT; i++) {
+        const x = fretX(i);
+        const line = document.createElementNS(SVG_NS, "line");
+        line.setAttribute("x1", x);
+        line.setAttribute("x2", x);
+        line.setAttribute("y1", TOP_Y - 10);
+        line.setAttribute("y2", BOTTOM_Y + 10);
+        line.setAttribute("stroke", i === 0 ? "var(--nut)" : "var(--fret-wire)");
+        line.setAttribute("stroke-width", i === 0 ? 6 : 2);
+        svg.appendChild(line);
+    }
+
+    ///strings
+    STRINGS.forEach((stringName, i) => {
+        const y = TOP_Y + ((BOTTOM_Y - TOP_Y) / (STRINGS.length - 1)) * i;
+        const line = document.createElementNS(SVG_NS, "line");
+        line.setAttribute("x1", NUT_X - 4);
+        line.setAttribute("x2", VIEW_W - 20);
+        line.setAttribute("y1", y);
+        line.setAttribute("y2", y);
+        line.setAttribute("stroke", "var(--string)");
+        line.setAttribute("stroke-width", 1 + i * 0.35);
+        svg.appendChild(line);
+    });
+
     STRINGS.forEach((stringName, stringIndex) => {
         const y = TOP_Y + (rowSpan / (STRINGS.length - 1)) * stringIndex;
 
