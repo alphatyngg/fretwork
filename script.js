@@ -33,10 +33,28 @@ function getScaleNotes(root, scaleId) {
 
 console.log(getScaleNotes(state.root, state.scaleId));
 
-const NUM_FRETS = 15;
-const FRET_WIDTH = 50;
-const STRING_SPACING = 30;
-const SVG_PADDING = 30;
+const SVG_NS = "http://www.w3.org/2000/svg";
+const FRET_COUNT = 17;
+const NUT_X = 54;
+const TOP_Y = 42;
+const ROW_GAP = 38;
+const SCALE_LENGTH = 1000;
+
+//distance from nut to fret n
+function fdist(n) {
+    return SCALE_LENGTH - SCALE_LENGTH / Math.pow(2, n / 12);
+}
+
+//scaling pixels
+const PX_PER_UNIT = 690 / fdist(15);
+
+function fretX(n) {
+    return NUT_X + fdist(n) * PX_PER_UNIT;
+}
+
+const BOTTOM_Y = TOP_Y + ROW_GAP * (STRINGS.length - 1);
+const VIEW_H = BOTTOM_Y + 46;
+const VIEW_W = fretX(FRET_COUNT) + 24;
 
 // open string pitch classes, matching STRINGS order
 const OPEN_NOTE = [4, 11, 7, 2, 9, 4]          // index into NOTE_NAMES for each open string
@@ -86,19 +104,22 @@ function playStringFret(stringIndex, fret){
 function buildFretboard() {
     const svg = document.getElementById("fretboard");
     svg.innerHTML = "";             // clears anything already drawn
+    svg.setAttribute("viewBox", `0 0 ${VIEW_W} ${VIEW_H}`);
 
     const scaleNotes = getScaleNotes(state.root, state.scaleId);
+    const rowSpan = BOTTOM_Y - TOP_Y;
 
     STRINGS.forEach((stringName, stringIndex) => {
-        for (let fret = 0; fret <= NUM_FRETS; fret++) {
-            const x = SVG_PADDING + fret * FRET_WIDTH;
-            const y = SVG_PADDING + stringIndex * STRING_SPACING;
+        const y = TOP_Y + (rowSpan / (STRINGS.length - 1)) * stringIndex;
+
+        for (let fret = 0; fret <= FRET_COUNT; fret++) {
+            const x = fret === 0 ? NUT_X - 4 : (fretX(fret - 1) + fretX(fret)) / 2;
 
             const note = getNoteAt(stringIndex, fret);
             const isInScale = scaleNotes.includes(note);
             const isRoot = note === state.root;
 
-            const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            const circle = document.createElementNS(SVG_NS, "circle");
             circle.setAttribute("cx", x);
             circle.setAttribute("cy", y);
             circle.setAttribute("r", isInScale ? 9 : 4);
@@ -122,7 +143,7 @@ function buildFretboard() {
                     labelText = String(interval);
                 }
 
-                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                const text = document.createElementNS(SVG_NS, "text");
                 text.setAttribute("x", x);
                 text.setAttribute("y", y + 3);
                 text.setAttribute("text-anchor", "middle");

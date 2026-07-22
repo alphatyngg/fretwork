@@ -225,6 +225,9 @@ select:hover {
 
 #fretboard {
     display: block;
+    width: 100%;
+    min-width: 820px;
+    height: auto;
 }
 
 #fretboard circle {
