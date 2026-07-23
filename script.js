@@ -126,6 +126,33 @@ function buildFretboard() {
     wood.setAttribute("fill", "url(#woodGrad)");
     svg.appendChild(wood);
 
+    //fret inlay markers (single)
+    const singleMarkers = [3, 5, 7, 9, 15, 17];
+    const midY = TOP_Y + rowSpan / 2;
+
+    singleMarkers.forEach(i => {
+        const cx = (fretX(i - 1) + fretX(i)) / 2;
+        const dot = document.createElementNS(SVG_NS, "circle");
+        dot.setAttribute("cx", cx);
+        dot.setAttribute("cy", midY);
+        dot.setAttribute("r", 5);
+        dot.setAttribute("fill", "var(--inlay)");
+        dot.setAttribute("opacity", "0.55");
+        svg.appendChild(dot);
+    });
+
+    //fret inlay marker (double)
+    const cx12 = (fretX(11) + fretX(12)) / 2;
+    [midY - rowSpan / 4, midY + rowSpan / 4].forEach(cy => {
+        const dot = document.createElementNS(SVG_NS, "circle");
+        dot.setAttribute("cx", cx12);
+        dot.setAttribute("cy", cy);
+        dot.setAttribute("r", 5);
+        dot.setAttribute("fill", "var(--inlay)");
+        dot.setAttribute("opacity", "0.55");
+        svg.appendChild(dot);
+    });
+
     //frets
     for (let i = 0; i <= FRET_COUNT; i++) {
         const x = fretX(i);
@@ -137,6 +164,18 @@ function buildFretboard() {
         line.setAttribute("stroke", i === 0 ? "var(--nut)" : "var(--fret-wire)");
         line.setAttribute("stroke-width", i === 0 ? 6 : 2);
         svg.appendChild(line);
+
+        if (i > 0) {
+            const label = document.createElementNS(SVG_NS, "text");
+            label.setAttribute("x", (fretX(i - 1) + fretX(i)) / 2);
+            label.setAttribute("y", BOTTOM_Y + 26);
+            label.setAttribute("text-anchor", "middle");
+            label.setAttribute("font-family", "var(--font-mono)");
+            label.setAttribute("font-size", "10");
+            label.setAttribute("fill", "var(--text-muted)");
+            label.textContent = i;
+            svg.appendChild(label);
+        }
     }
 
     ///strings
@@ -150,6 +189,16 @@ function buildFretboard() {
         line.setAttribute("stroke", "var(--string)");
         line.setAttribute("stroke-width", 1 + i * 0.35);
         svg.appendChild(line);
+
+        const label = document.createElementNS(SVG_NS, "text");
+        label.setAttribute("x", NUT_X - 16);
+        label.setAttribute("y", y + 4);
+        label.setAttribute("text-anchor", "end");
+        label.setAttribute("font-family", "var(--font-mono)");
+        label.setAttribute("font-size", "12");
+        label.setAttribute("fill", "var(--text-muted)");
+        label.textContent = stringName;
+        svg.appendChild(label);
     });
 
     STRINGS.forEach((stringName, stringIndex) => {
