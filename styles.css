@@ -9,6 +9,8 @@
     --accent-root: #e8a84c;
     --accent-scale: #64b6a6;
     --accent-glow: #e2a33d;
+    --accent-root-glow: rgba(232, 168, 76, 0.65);
+    --accent-scale-glow: rgba(100, 182, 166, 0.5);
 
     --border: rgba(233, 226, 208, 0.14);
     --shadow: rgba(0, 0, 0, 0.45);
@@ -237,15 +239,38 @@ select:hover {
     height: auto;
 }
 
-#fretboard circle {
+.note-dot {
     cursor: pointer;
-    transition: transform 0.1s ease;
     transform-origin: center;
     transform-box: fill-box;
+    transition: transform 0.12s ease;
 }
 
-#fretboard circle:hover {
-    transform: scale(1.15);
+.note-dot:hover {
+    transform: scale(1.12);
+}
+
+.note-dot:focus {
+    outline: none;
+}
+
+.note-dot:focus-visible {
+    outline: none;
+}
+
+.note-dot:focus-visible circle {
+    stroke: var(--accent-glow);
+    stroke-width: 3;
+}
+
+@keyframes pluck {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+.note-dot.plucked {
+    animation: pluck 0.28s ease;
 }
 
 .bpm-value {

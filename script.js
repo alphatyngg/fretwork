@@ -209,41 +209,69 @@ function buildFretboard() {
 
             const note = getNoteAt(stringIndex, fret);
             const isInScale = scaleNotes.includes(note);
+            if (!isInScale) continue;
+
             const isRoot = note === state.root;
 
+            const g = document.createElementNS(SVG_NS, "g");
+            g.setAttribute("class", "note-dot");
+            g.setAttribute("tabindex", "0");
+            g.setAttribute("role", "button");
+            g.setAttribute("aria-label", `${stringName} string, fret ${fret}, note ${NOTE_NAMES[note]}`);
+
+            const glow = isRoot ? "var(--accent-root-glow)" : "var(--accent-scale-glow)";
             const circle = document.createElementNS(SVG_NS, "circle");
             circle.setAttribute("cx", x);
             circle.setAttribute("cy", y);
-            circle.setAttribute("r", isInScale ? 9 : 4);
-            circle.setAttribute("fill", isRoot ? "orange" : isInScale ? "teal" : "lightgray");
+            circle.setAttribute("r", isRoot ? 15 : 14);
+            circle.setAttribute("fill", isRoot ? "var(--accent-root)" : "var(--accent-scale)");
+            circle.setAttribute("stroke", "var(--color-bg)");
+            circle.setAttribute("stroke-width", "1.5");
+            circle.setAttribute("style", `filter: drop-shadow(0 0 ${isRoot ? 7 : 4}px ${glow})`);
 
-            svg.appendChild(circle);
+            g.appendChild(circle);
 
-            circle.style.cursor = "pointer";
-            circle.addEventListener("click", () => playStringFret(stringIndex, fret));
+            const degreeIndex = scaleNotes.indexOf(note);
+            const interval = (note - state.root + 12) % 12;
 
-            if (isInScale) {
-                const degreeIndex = scaleNotes.indexOf(note);
-                const interval = (note - state.root + 12) % 12;
-
-                let labelText;
-                if (state.labelMode === "name") {
-                    labelText = NOTE_NAMES[note];
-                } else if (state.labelMode === "degree") {
-                    labelText = String(degreeIndex + 1);
-                } else {
-                    labelText = String(interval);
-                }
-
-                const text = document.createElementNS(SVG_NS, "text");
-                text.setAttribute("x", x);
-                text.setAttribute("y", y + 3);
-                text.setAttribute("text-anchor", "middle");
-                text.setAttribute("font-size", "8");
-                text.setAttribute("fill", "white");
-                text.textContent = labelText;
-                svg.appendChild(text);
+            let labelText;
+            if (state.labelMode === "name") {
+                labelText = NOTE_NAMES[note];
+            } else if (state.labelMode === "degree") {
+                labelText = String(degreeIndex + 1);
+            } else {
+                labelText = String(interval);
             }
+
+            const text = document.createElementNS(SVG_NS, "text");
+            text.setAttribute("x", x);
+            text.setAttribute("y", y + 4.5);
+            text.setAttribute("text-anchor", "middle");
+            text.setAttribute("font-family", "var(--font-mono)");
+            text.setAttribute("font-size", "12");
+            text.setAttribute("font-weight", "700");
+            text.setAttribute("fill", isRoot ? "#2a1808" : "#152622");
+            text.style.pointerEvents = "none";
+            text.textContent = labelText;
+
+            g.appendChild(text);
+            
+            const pluck = () => {
+                playStringFret(stringIndex, fret);
+                g.classList.remove("plucked");
+                void g.getBoundingClientRect();
+                g.classList.add("plucked");
+            };
+
+            g.addEventListener("click", pluck);
+            g.addEventListener("keydown", e => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    pluck();
+                }
+            });
+
+            svg.appendChild(g);
         }
     });
 }
