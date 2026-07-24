@@ -507,3 +507,15 @@ footer.hint {
     text-align: center;
     padding-top: 8px;
 }
+
+.wheel-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+#chordWheel {
+    width: 100%;
+    max-width: 560px;
+    height: auto;
+}
