@@ -54,3 +54,49 @@ function wedgePath(slot, innerR, outerR) {
 }
 
 console.log(wedgePath(0, 100, 160));
+
+const RINGS = {
+    major: { inner: 90,  outer: 150 },
+    minor: { inner: 150, outer: 205 },
+    dim:   { inner: 205, outer: 250 }
+};
+
+function buildWheel() {
+    const svg = document.getElementById("chordWheel");
+    svg.innerHTML = "";
+    svg.setAttribute("viewBox", `0 0 ${VIEW_SIZE} ${VIEW_SIZE}`);
+
+    WHEEL_KEYS.forEach((keyData, slot) => {
+        drawWedge(svg, slot, RINGS.major, keyData.major, "var(--accent-root)");
+        drawWedge(svg, slot, RINGS.minor, keyData.minor, "var(--accent-scale)");
+        drawWedge(svg, slot, RINGS.dim,   keyData.dim,   "var(--color-surface-2)");
+    });
+}
+
+function drawWedge(svg, slot, ring, label, fill) {
+    // wedge shape
+    const path = document.createElementNS(SVG_NS, "path");
+
+    path.setAttribute("d", wedgePath(slot, ring.inner, ring.outer));
+    path.setAttribute("fill", fill);
+    path.setAttribute("stroke", "var(--color-bg)");
+    path.setAttribute("stroke-width", "2");
+    svg.appendChild(path);
+
+    // label text (centered)
+    const midR = (ring.inner + ring.outer) / 2;
+    const pos = pointAt(slot, midR);
+    const text = document.createElementNS(SVG_NS, "text");
+
+    text.setAttribute("x", pos.x);
+    text.setAttribute("y", pos.y + 5);
+    text.setAttribute("text-anchor", "middle");
+    text.setAttribute("font-family", "var(--font-display)");
+    text.setAttribute("font-size", "15");
+    text.setAttribute("font-weight", "700");
+    text.setAttribute("fill", "var(--color-bg)");
+    text.textContent = label;
+    svg.appendChild(text);
+}
+
+buildWheel();
