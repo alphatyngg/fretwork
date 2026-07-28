@@ -71,15 +71,18 @@ function buildWheel() {
     svg.setAttribute("viewBox", `0 0 ${VIEW_SIZE} ${VIEW_SIZE}`);
 
     WHEEL_KEYS.forEach((keyData, slot) => {
-        drawWedge(svg, slot, RINGS.major, keyData.major, "var(--accent-root)");
-        drawWedge(svg, slot, RINGS.minor, keyData.minor, "var(--accent-scale)");
-        drawWedge(svg, slot, RINGS.dim,   keyData.dim,   "var(--color-surface-2)");
+        drawWedge(svg, slot, RINGS.major, "major", keyData.major, "var(--accent-root)");
+        drawWedge(svg, slot, RINGS.minor, "minor", keyData.minor, "var(--accent-scale)");
+        drawWedge(svg, slot, RINGS.dim,   "dim",   keyData.dim,   "var(--accent-dim)");
     });
 
     drawHub(svg);
 }
 
-function drawWedge(svg, slot, ring, label, fill) {
+function drawWedge(svg, slot, ring, ringName, label, fill) {
+    const family = familyWedges(WHEEL_STATE.selectedSlot);
+    const inFamily = family.has(`${ringName}:${slot}`);
+
     // wedge shape
     const path = document.createElementNS(SVG_NS, "path");
 
@@ -87,6 +90,12 @@ function drawWedge(svg, slot, ring, label, fill) {
     path.setAttribute("fill", fill);
     path.setAttribute("stroke", "var(--color-bg)");
     path.setAttribute("stroke-width", "2");
+    path.setAttribute("opacity", inFamily ? "1" : "0.35");
+    path.style.cursor = "pointer";
+    path.addEventListener("click", () => {
+        WHEEL_STATE.selectedSlot = slot;
+        buildWheel();
+    })
     svg.appendChild(path);
 
     // label text (centered)
@@ -101,6 +110,8 @@ function drawWedge(svg, slot, ring, label, fill) {
     text.setAttribute("font-size", "15");
     text.setAttribute("font-weight", "700");
     text.setAttribute("fill", "var(--color-bg)");
+    text.setAttribute("opacity", inFamily ? "1" : "0.45");
+    text.style.pointerEvents = "none";
     text.textContent = label;
     svg.appendChild(text);
 }
@@ -152,6 +163,26 @@ function drawHub(svg) {
     relMinor.setAttribute("fill", "var(--text-muted)");
     relMinor.textContent = "rel. " + keyData.minor;
     svg.appendChild(relMinor);
+}
+
+function familyWedges(slot) {
+    const wrap = n => (n + 12) % 12;
+    const set = new Set();
+
+    // major
+    set.add(`major:${wrap(slot - 1)}`);
+    set.add(`major:${slot}`);
+    set.add(`major:${wrap(slot + 1)}`);
+
+    // minor
+    set.add(`minor:${wrap(slot - 1)}`);
+    set.add(`minor:${slot}`);
+    set.add(`minor:${wrap(slot + 1)}`);
+
+    // dim
+    set.add(`dim:${wrap(slot + 1)}`);
+
+    return set;
 }
 
 buildWheel();
