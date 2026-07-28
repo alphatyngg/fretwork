@@ -114,6 +114,27 @@ function drawWedge(svg, slot, ring, ringName, label, fill) {
     text.style.pointerEvents = "none";
     text.textContent = label;
     svg.appendChild(text);
+
+    // roman numeral
+    const roman = romanFor(ringName, slot, WHEEL_STATE.selectedSlot);
+
+    if (roman) {
+        const numOffset = ringName === "dim" ? 9 : 12;
+        const numPos = pointAt(slot, midR);
+        const num = document.createElementNS(SVG_NS, "text");
+
+        num.setAttribute("x", numPos.x);
+        num.setAttribute("y", numPos.y - numOffset);
+        num.setAttribute("text-anchor", "middle");
+        num.setAttribute("font-family", "var(--font-mono)");
+        num.setAttribute("font-size", "10");
+        num.setAttribute("font-weight", "700");
+        num.setAttribute("fill", "var(--color-bg)");
+        num.setAttribute("opacity", "0.7");
+        num.style.pointerEvents = "none";
+        num.textContent = roman;
+        svg.appendChild(num);
+    }
 }
 
 function drawHub(svg) {
@@ -183,6 +204,25 @@ function familyWedges(slot) {
     set.add(`dim:${wrap(slot + 1)}`);
 
     return set;
+}
+
+function romanFor(ringName, slot, selectedSlot) {
+    const wrap = n => (n + 12) % 12;
+    const rel = wrap(slot - selectedSlot);
+
+    if (ringName === "major") {
+        if (rel === 0) return "I";
+        if (rel === 1) return "V";
+        if (rel === 11) return "IV";
+    } else if (ringName === "minor") {
+        if (rel === 0) return "vi";
+        if (rel === 1) return "iii";
+        if (rel === 11) return "ii";
+    } else if (ringName === "dim") {
+        if (rel === 1) return "viiº";
+    }
+
+    return null;
 }
 
 buildWheel();
