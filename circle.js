@@ -13,6 +13,10 @@ const WHEEL_KEYS = [
     { major: "F", minor: "Dm", dim: "Eº" }
 ];
 
+const WHEEL_STATE = {
+    selectedSlot: 0
+};
+
 console.log(WHEEL_KEYS);
 console.log(WHEEL_KEYS.length);
 
@@ -71,6 +75,8 @@ function buildWheel() {
         drawWedge(svg, slot, RINGS.minor, keyData.minor, "var(--accent-scale)");
         drawWedge(svg, slot, RINGS.dim,   keyData.dim,   "var(--color-surface-2)");
     });
+
+    drawHub(svg);
 }
 
 function drawWedge(svg, slot, ring, label, fill) {
@@ -97,6 +103,55 @@ function drawWedge(svg, slot, ring, label, fill) {
     text.setAttribute("fill", "var(--color-bg)");
     text.textContent = label;
     svg.appendChild(text);
+}
+
+function drawHub(svg) {
+    const keyData = WHEEL_KEYS[WHEEL_STATE.selectedSlot];
+
+    // hub bgd circle
+    const circle = document.createElementNS(SVG_NS, "circle");
+    circle.setAttribute("cx", CX);
+    circle.setAttribute("cy", CY);
+    circle.setAttribute("r", 82);
+    circle.setAttribute("fill", "var(--color-surface)");
+    circle.setAttribute("stroke", "var(--border)");
+    circle.setAttribute("stroke-width", "1.5");
+    svg.appendChild(circle);
+
+    // "key" caption
+    const caption = document.createElementNS(SVG_NS, "text");
+    caption.setAttribute("x", CX);
+    caption.setAttribute("y", CY - 22);
+    caption.setAttribute("text-anchor", "middle");
+    caption.setAttribute("font-family", "var(--font-mono)");
+    caption.setAttribute("font-size", "11");
+    caption.setAttribute("letter-spacing", "2");
+    caption.setAttribute("fill", "var(--text-muted)");
+    caption.textContent = "KEY";
+    svg.appendChild(caption);
+
+    // key name
+    const keyName = document.createElementNS(SVG_NS, "text");
+    keyName.setAttribute("x", CX);
+    keyName.setAttribute("y", CY + 12);
+    keyName.setAttribute("text-anchor", "middle");
+    keyName.setAttribute("font-family", "var(--font-display)");
+    keyName.setAttribute("font-size", "36");
+    keyName.setAttribute("font-weight", "900");
+    keyName.setAttribute("fill", "var(--accent-root)");
+    keyName.textContent = keyData.major;
+    svg.appendChild(keyName);
+
+    // relative minor (smaller)
+    const relMinor = document.createElementNS(SVG_NS, "text");
+    relMinor.setAttribute("x", CX);
+    relMinor.setAttribute("y", CY + 34);
+    relMinor.setAttribute("text-anchor", "middle");
+    relMinor.setAttribute("font-family", "var(--font-mono)");
+    relMinor.setAttribute("font-size", "13");
+    relMinor.setAttribute("fill", "var(--text-muted)");
+    relMinor.textContent = "rel. " + keyData.minor;
+    svg.appendChild(relMinor);
 }
 
 buildWheel();
