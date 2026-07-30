@@ -2,6 +2,8 @@
 
 A guitar practice companion in your browser - visualize scales on a fretboard, hear the notes, and keep time with a built-in metronome for practicing.
 
+**[Live site →](fretworkapp.com)**
+
 ## Features
 - Interactive fretboard - highlights any scale in any key across all 6 strings
 - Click any fret to hear the note, or tab through them with keyboard (tab + enter)
@@ -23,8 +25,8 @@ Plain HTML, CSS, vanilla JS.
 Fretboard drawn as inline SVG, audio runs on Web Audio API
 
 ## Status
-Core functionality & visuals complete. 
-Next: splitting into a multipage site + circle of fifths + chords reference
+Core functionality & visuals complete.
+Next: Circle of fifths + chords reference
 
 ## Coming soon
 - Circle of Fifths page
