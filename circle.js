@@ -85,6 +85,7 @@ function buildWheel() {
 
 function updateHighlight() {
     const family = familyWedges(WHEEL_STATE.selectedSlot);
+
     wedgeRefs.forEach(ref => {
         const inFamily = family.has(`${ref.ringName}:${ref.slot}`);
         ref.path.setAttribute("opacity", inFamily ? "1" : "0.35");
@@ -94,7 +95,10 @@ function updateHighlight() {
         ref.romanText.textContent = roman || "";
         ref.romanText.setAttribute("opacity", roman ? "0.7" : "0");
     });
-    drawHub(document.getElementById("chordWheel"));         // refresh
+
+    const svg = document.getElementById("chordWheel");
+    drawFamilyOutline(svg);
+    drawHub(svg);
 }
 
 function drawWedge(svg, slot, ring, ringName, label, fill) {
@@ -201,6 +205,57 @@ function drawHub(svg) {
     svg.appendChild(relMinor);
 
     svg.appendChild(g);
+}
+
+function drawFamilyOutline(svg) {
+    // remove old outline
+    const old = svg.querySelector("#familyOutline");
+    if (old) old.remove();
+
+    const slot = WHEEL_STATE.selectedSlot;
+    const wrap = n => (n + 12) % 12;
+
+    const majInner = RINGS.major.inner;
+    const minOuter = RINGS.minor.outer;
+    const dimOuter = RINGS.dim.outer;
+
+    const pt = (slotEdge, r) => {
+        const a = (slotEdge * 30 - 90) * Math.PI / 180;
+        return { x: CX + r * Math.cos(a), y: CY + r * Math.sin(a) };
+    };
+
+    // edges
+    const leftEdge = slot - 1 - 0.5;
+    const midEdge = slot + 1 - 0.5;
+    const rightEdge = slot + 1 + 0.5;
+
+    // corners
+    const p1 = pt(leftEdge, majInner);
+    const p2 = pt(leftEdge, minOuter);
+    const p3 = pt(midEdge, minOuter);
+    const p4 = pt(midEdge, dimOuter);
+    const p5 = pt(rightEdge, dimOuter);
+    const p6 = pt(rightEdge, majInner);
+
+    const d = [
+        `M ${p1.x} ${p1.y}`,
+        `L ${p2.x} ${p2.y}`,
+        `A ${minOuter} ${minOuter} 0 0 1 ${p3.x} ${p3.y}`,
+        `L ${p4.x} ${p4.y}`,
+        `A ${dimOuter} ${dimOuter} 0 0 1 ${p5.x} ${p5.y}`,
+        `L ${p6.x} ${p6.y}`,
+        `A ${majInner} ${majInner} 0 0 0 ${p1.x} ${p1.y}`,
+        "Z"
+    ].join(" ");
+
+    const outline = document.createElementNS(SVG_NS, "path");
+    outline.setAttribute("id", "familyOutline");
+    outline.setAttribute("d", d);
+    outline.setAttribute("fill", "none");
+    outline.setAttribute("stroke", "var(--text)");
+    outline.setAttribute("stroke-width", "3");
+    outline.style.pointerEvents = "none";
+    svg.appendChild(outline);
 }
 
 function familyWedges(slot) {
