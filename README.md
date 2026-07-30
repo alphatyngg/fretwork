@@ -2,7 +2,7 @@
 
 A guitar practice companion in your browser - visualize scales on a fretboard, hear the notes, and keep time with a built-in metronome for practicing.
 
-**[Live site →](fretworkapp.com)**
+**[Live site →](https://fretworkapp.com)**
 
 ## Features
 - Interactive fretboard - highlights any scale in any key across all 6 strings
