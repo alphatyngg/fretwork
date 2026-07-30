@@ -520,3 +520,11 @@ footer.hint {
     max-width: 560px;
     height: auto;
 }
+
+#chordWheel path {
+    transition: opacity 0.35s ease;
+}
+
+#chordWheel text {
+    transition: opacity 0.35s ease;
+}

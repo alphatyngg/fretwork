@@ -65,10 +65,13 @@ const RINGS = {
     dim:   { inner: 205, outer: 250 }
 };
 
+let wedgeRefs = [];
+
 function buildWheel() {
     const svg = document.getElementById("chordWheel");
     svg.innerHTML = "";
     svg.setAttribute("viewBox", `0 0 ${VIEW_SIZE} ${VIEW_SIZE}`);
+    wedgeRefs = [];
 
     WHEEL_KEYS.forEach((keyData, slot) => {
         drawWedge(svg, slot, RINGS.major, "major", keyData.major, "var(--accent-root)");
@@ -77,12 +80,24 @@ function buildWheel() {
     });
 
     drawHub(svg);
+    updateHighlight();
+}
+
+function updateHighlight() {
+    const family = familyWedges(WHEEL_STATE.selectedSlot);
+    wedgeRefs.forEach(ref => {
+        const inFamily = family.has(`${ref.ringName}:${ref.slot}`);
+        ref.path.setAttribute("opacity", inFamily ? "1" : "0.35");
+        ref.nameText.setAttribute("opacity", inFamily ? "1" : "0.45");
+
+        const roman = inFamily ? romanFor(ref.ringName, ref.slot, WHEEL_STATE.selectedSlot) : null;
+        ref.romanText.textContent = roman || "";
+        ref.romanText.setAttribute("opacity", roman ? "0.7" : "0");
+    });
+    drawHub(document.getElementById("chordWheel"));         // refresh
 }
 
 function drawWedge(svg, slot, ring, ringName, label, fill) {
-    const family = familyWedges(WHEEL_STATE.selectedSlot);
-    const inFamily = family.has(`${ringName}:${slot}`);
-
     // wedge shape
     const path = document.createElementNS(SVG_NS, "path");
 
@@ -90,54 +105,54 @@ function drawWedge(svg, slot, ring, ringName, label, fill) {
     path.setAttribute("fill", fill);
     path.setAttribute("stroke", "var(--color-bg)");
     path.setAttribute("stroke-width", "2");
-    path.setAttribute("opacity", inFamily ? "1" : "0.35");
     path.style.cursor = "pointer";
     path.addEventListener("click", () => {
         WHEEL_STATE.selectedSlot = slot;
-        buildWheel();
+        updateHighlight();
     })
     svg.appendChild(path);
 
     // label text (centered)
     const midR = (ring.inner + ring.outer) / 2;
     const pos = pointAt(slot, midR);
-    const text = document.createElementNS(SVG_NS, "text");
+    const nameText = document.createElementNS(SVG_NS, "text");
 
-    text.setAttribute("x", pos.x);
-    text.setAttribute("y", pos.y + 5);
-    text.setAttribute("text-anchor", "middle");
-    text.setAttribute("font-family", "var(--font-display)");
-    text.setAttribute("font-size", "15");
-    text.setAttribute("font-weight", "700");
-    text.setAttribute("fill", "var(--color-bg)");
-    text.setAttribute("opacity", inFamily ? "1" : "0.45");
-    text.style.pointerEvents = "none";
-    text.textContent = label;
-    svg.appendChild(text);
+    nameText.setAttribute("x", pos.x);
+    nameText.setAttribute("y", pos.y + 5);
+    nameText.setAttribute("text-anchor", "middle");
+    nameText.setAttribute("font-family", "var(--font-display)");
+    nameText.setAttribute("font-size", "15");
+    nameText.setAttribute("font-weight", "700");
+    nameText.setAttribute("fill", "var(--color-bg)");
+    nameText.style.pointerEvents = "none";
+    nameText.textContent = label;
+    svg.appendChild(nameText);
 
     // roman numeral
-    const roman = romanFor(ringName, slot, WHEEL_STATE.selectedSlot);
+    const numOffset = ringName === "dim" ? 9 : 12;
+    const romanText = document.createElementNS(SVG_NS, "text");
 
-    if (roman) {
-        const numOffset = ringName === "dim" ? 9 : 12;
-        const numPos = pointAt(slot, midR);
-        const num = document.createElementNS(SVG_NS, "text");
-
-        num.setAttribute("x", numPos.x);
-        num.setAttribute("y", numPos.y - numOffset);
-        num.setAttribute("text-anchor", "middle");
-        num.setAttribute("font-family", "var(--font-mono)");
-        num.setAttribute("font-size", "10");
-        num.setAttribute("font-weight", "700");
-        num.setAttribute("fill", "var(--color-bg)");
-        num.setAttribute("opacity", "0.7");
-        num.style.pointerEvents = "none";
-        num.textContent = roman;
-        svg.appendChild(num);
-    }
+    romanText.setAttribute("x", pos.x);
+    romanText.setAttribute("y", pos.y - numOffset);
+    romanText.setAttribute("text-anchor", "middle");
+    romanText.setAttribute("font-family", "var(--font-mono)");
+    romanText.setAttribute("font-size", "10");
+    romanText.setAttribute("font-weight", "700");
+    romanText.setAttribute("fill", "var(--color-bg)");
+    romanText.style.pointerEvents = "none";
+    svg.appendChild(romanText);
+    
+    wedgeRefs.push({ path, nameText, romanText, slot, ringName });
 }
 
 function drawHub(svg) {
+    // removing old hub
+    const old = svg.querySelector("#hubGroup");
+    if (old) old.remove();
+
+    const g = document.createElementNS(SVG_NS, "g");
+    g.setAttribute("id", "hubGroup");
+
     const keyData = WHEEL_KEYS[WHEEL_STATE.selectedSlot];
 
     // hub bgd circle
@@ -184,6 +199,8 @@ function drawHub(svg) {
     relMinor.setAttribute("fill", "var(--text-muted)");
     relMinor.textContent = "rel. " + keyData.minor;
     svg.appendChild(relMinor);
+
+    svg.appendChild(g);
 }
 
 function familyWedges(slot) {
