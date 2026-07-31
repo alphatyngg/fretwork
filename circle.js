@@ -17,9 +17,6 @@ const WHEEL_STATE = {
     selectedSlot: 0
 };
 
-console.log(WHEEL_KEYS);
-console.log(WHEEL_KEYS.length);
-
 const SVG_NS = "http://www.w3.org/2000/svg";
 const CX = 280;
 const CY = 280;
@@ -56,8 +53,6 @@ function wedgePath(slot, innerR, outerR) {
         "Z"
     ].join(" ");
 }
-
-console.log(wedgePath(0, 100, 160));
 
 const RINGS = {
     major: { inner: 90,  outer: 150 },
@@ -99,6 +94,7 @@ function updateHighlight() {
     const svg = document.getElementById("chordWheel");
     drawFamilyOutline(svg);
     drawHub(svg);
+    drawKeyMarker(svg);
 }
 
 function drawWedge(svg, slot, ring, ringName, label, fill) {
@@ -163,11 +159,11 @@ function drawHub(svg) {
     const circle = document.createElementNS(SVG_NS, "circle");
     circle.setAttribute("cx", CX);
     circle.setAttribute("cy", CY);
-    circle.setAttribute("r", 82);
+    circle.setAttribute("r", 84);
     circle.setAttribute("fill", "var(--color-surface)");
-    circle.setAttribute("stroke", "var(--border)");
-    circle.setAttribute("stroke-width", "1.5");
-    svg.appendChild(circle);
+    circle.setAttribute("stroke", "var(--text)");
+    circle.setAttribute("stroke-width", "0.5");
+    g.appendChild(circle);
 
     // "key" caption
     const caption = document.createElementNS(SVG_NS, "text");
@@ -179,7 +175,7 @@ function drawHub(svg) {
     caption.setAttribute("letter-spacing", "2");
     caption.setAttribute("fill", "var(--text-muted)");
     caption.textContent = "KEY";
-    svg.appendChild(caption);
+    g.appendChild(caption);
 
     // key name
     const keyName = document.createElementNS(SVG_NS, "text");
@@ -191,7 +187,7 @@ function drawHub(svg) {
     keyName.setAttribute("font-weight", "900");
     keyName.setAttribute("fill", "var(--accent-root)");
     keyName.textContent = keyData.major;
-    svg.appendChild(keyName);
+    g.appendChild(keyName);
 
     // relative minor (smaller)
     const relMinor = document.createElementNS(SVG_NS, "text");
@@ -202,7 +198,7 @@ function drawHub(svg) {
     relMinor.setAttribute("font-size", "13");
     relMinor.setAttribute("fill", "var(--text-muted)");
     relMinor.textContent = "rel. " + keyData.minor;
-    svg.appendChild(relMinor);
+    g.appendChild(relMinor);
 
     svg.appendChild(g);
 }
@@ -256,6 +252,47 @@ function drawFamilyOutline(svg) {
     outline.setAttribute("stroke-width", "3");
     outline.style.pointerEvents = "none";
     svg.appendChild(outline);
+}
+
+function drawKeyMarker(svg) {
+    const old = svg.querySelector("#keyMarker");
+    if (old) old.remove();
+
+    const slot = WHEEL_STATE.selectedSlot;
+
+    const g = document.createElementNS(SVG_NS, "g");
+    g.setAttribute("id", "keyMarker");
+    g.style.pointerEvents = "none";
+
+    g.setAttribute("transform", `rotate(${slot * 30}, ${CX}, ${CY})`);
+
+    const pos = pointAt(0, RINGS.major.inner);
+    const w = 38, h = 15;
+
+    const tab = document.createElementNS(SVG_NS, "rect");
+    tab.setAttribute("x", pos.x - w / 2);
+    tab.setAttribute("y", pos.y - h / 2);
+    tab.setAttribute("width", w);
+    tab.setAttribute("height", h);
+    tab.setAttribute("rx", 4);
+    tab.setAttribute("fill", "var(--text)");
+    tab.setAttribute("stroke", "var(--text)");
+    tab.setAttribute("stroke-width", "2.5");
+    g.appendChild(tab);
+
+    const label = document.createElementNS(SVG_NS, "text");
+    label.setAttribute("x", pos.x);
+    label.setAttribute("y", pos.y + 3.5);
+    label.setAttribute("text-anchor", "middle");
+    label.setAttribute("font-family", "var(--font-mono)");
+    label.setAttribute("font-size", "9");
+    label.setAttribute("font-weight", "700");
+    label.setAttribute("letter-spacing", "1");
+    label.setAttribute("fill", "var(--color-bg)");
+    label.textContent = "KEY";
+    g.appendChild(label);
+
+    svg.appendChild(g);
 }
 
 function familyWedges(slot) {
