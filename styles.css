@@ -566,3 +566,9 @@ input[type="range"] {
 #chordWheel text {
     transition: opacity 0.35s ease;
 }
+
+.chord-diagram {
+    width: 140px;
+    height: auto;
+    display: block;
+}
