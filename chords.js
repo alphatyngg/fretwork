@@ -7,7 +7,7 @@ const CHORD_SHAPES = {
                 frets: [-1, 3, 2, 0, 1, 0],
                 fingers: [0, 3, 2, 0, 1, 0],
                 baseFret: 1,
-                label: "C open",
+                label: "C Open",
                 note: "Open position"
             }
         ]
@@ -131,12 +131,35 @@ function drawChordDiagram(shape) {
     return svg;
 }
 
+function drawChordCard(shape) {
+    const card = document.createElement("div");
+    card.className = "chord-card";
+
+    // label above
+    const label = document.createElement("div");
+    label.className = "chord-card-label";
+    label.textContent = shape.label;
+    card.appendChild(label);
+
+    card.appendChild(drawChordDiagram(shape));
+
+    // description below
+    if (shape.note) {
+        const note = document.createElement("div");
+        note.className = "chord-card-note";
+        note.textContent = shape.note;
+        card.appendChild(note);
+    }
+
+    return card;
+}
+
 function buildChords() {
     const grid = document.getElementById("chordGrid");
     grid.innerHTML = "";
 
     const shape = CHORD_SHAPES.C.major[0];
-    grid.appendChild(drawChordDiagram(shape));
+    grid.appendChild(drawChordCard(shape));
 }
 
 buildChords();
