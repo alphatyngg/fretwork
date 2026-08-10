@@ -120,6 +120,23 @@ function drawChordDiagram(shape) {
         svg.appendChild(label);
     }
 
+    if (shape.barre) {
+        const bRow = shape.barre.fret - shape.baseFret;
+        const bY = y0 + bRow * CELL_H + CELL_H / 2;
+        const bX1 = x0 + shape.barre.from * CELL_W;
+        const bX2 = x0 + shape.barre.to * CELL_W;
+        const bar = document.createElementNS(SVG_NS, "line");
+
+        bar.setAttribute("x1", bX1);
+        bar.setAttribute("y1", bY);
+        bar.setAttribute("x2", bX2);
+        bar.setAttribute("y2", bY);
+        bar.setAttribute("stroke", "var(--accent-root)");
+        bar.setAttribute("stroke-width", DOT_R * 2);
+        bar.setAttribute("stroke-linecap", "round");
+        svg.appendChild(bar);
+    }
+
     // markers
     shape.frets.forEach((fret, stringIndex) => {
         const x = x0 + stringIndex * CELL_W;
