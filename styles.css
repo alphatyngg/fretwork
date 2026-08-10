@@ -599,3 +599,26 @@ input[type="range"] {
     color: var(--text-muted);
     text-align: center;
 }
+
+.chord-row {
+    margin-bottom: 28px;
+}
+
+.chord-row:last-child {
+    margin-bottom: 0;
+}
+
+.chord-row-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    margin: 0 0 12px 0;
+}
+
+.chord-cards {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}

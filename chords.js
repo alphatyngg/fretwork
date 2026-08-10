@@ -9,9 +9,48 @@ const CHORD_SHAPES = {
                 baseFret: 1,
                 label: "C Open",
                 note: "Open position"
+            },
+            {
+                frets: [-1, 3, 5, 5, 5, 3],
+                fingers: [0, 1, 3, 4, 2, 1],
+                baseFret: 3,
+                barre: { fret: 3, from: 1, to: 5},
+                label: "C Barre",
+                note: "A-shape barre"
+            }
+        ],
+        minor: [
+            {
+                frets: [-1, 3, 5, 5, 4, 3],
+                fingers: [0, 1, 3, 4, 2, 1],
+                baseFret: 3,
+                barre: { fret: 3, from: 1, to: 5},
+                label: "Cm Barre",
+                note: "Am-shape barre"
+            }
+        ],
+        seventh: [
+            {
+                frets: [-1, 3, 2, 3, 1, 0],
+                fingers: [0, 3, 2, 4, 1, 0],
+                baseFret: 1,
+                label: "C7 Open",
+                note: "Open position"
             }
         ]
     }
+};
+
+const CHORD_TYPE_NAMES = {
+    major: "Major",
+    minor: "Minor", 
+    seventh: "7th"
+};
+
+const CHORD_TYPE_SUFFIX = {
+    major: "",
+    minor: "m",
+    seventh: "7"
 };
 
 const STRING_COUNT = 6;
@@ -158,8 +197,29 @@ function buildChords() {
     const grid = document.getElementById("chordGrid");
     grid.innerHTML = "";
 
-    const shape = CHORD_SHAPES.C.major[0];
-    grid.appendChild(drawChordCard(shape));
+    const root = "C";
+    const chordTypes = CHORD_SHAPES[root];
+
+    Object.keys(chordTypes).forEach(typeKey => {
+        const shapes = chordTypes[typeKey];
+        const row = document.createElement("div");
+        
+        row.className = "chord-row";
+
+        const heading = document.createElement("h3");
+
+        heading.className = "chord-row-title";
+        heading.textContent = `${root}${CHORD_TYPE_SUFFIX[typeKey]} - ${CHORD_TYPE_NAMES[typeKey]}`;
+        row.appendChild(heading);
+
+        const cards = document.createElement("div");
+        
+        cards.className = "chord-cards";
+        shapes.forEach(shape => cards.appendChild(drawChordCard(shape)));
+        row.appendChild(cards);
+
+        grid.appendChild(row);
+    });
 }
 
 buildChords();
