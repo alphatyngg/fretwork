@@ -41,6 +41,11 @@ const CHORD_SHAPES = {
     }
 };
 
+const CHROMATIC = ["C", "C#", "D", "D#", "E", "F", 
+                    "F#", "G", "G#", "A", "A#", "B"];
+
+const STRING_OPEN = ["E", "A", "D", "G", "B", "E"];
+
 const CHORD_TYPE_NAMES = {
     major: "Major",
     minor: "Minor", 
@@ -56,6 +61,16 @@ const CHORD_TYPE_SUFFIX = {
 const CHORD_STATE = {
     root: "C"
 };
+
+function fretForNote(note, stringIndex) {
+    const openNote = STRING_OPEN[stringIndex];
+    const openIdx = CHROMATIC.indexOf(openNote);
+    const targetIdx = CHROMATIC.indexOf(note);
+
+    let fret = (targetIdx - openIdx + 12) % 12;
+
+    return fret === 0 ? 12 : fret;
+}
 
 const STRING_COUNT = 6;
 const FRET_ROWS = 5;
