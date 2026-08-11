@@ -72,6 +72,87 @@ function fretForNote(note, stringIndex) {
     return fret === 0 ? 12 : fret;
 }
 
+const MOVABLE_SHAPES = {
+    major: [
+        {
+            anchorString: 0,
+            frets: [1, 3, 3, 2, 1, 1],
+            fingers: [1, 3, 4, 2, 1, 1],
+            barre: { fret: 1, from: 0, to: 5 },
+            label: "E-shape",
+            note: "Barre"
+        },
+        {
+            anchorString: 1,
+            frets: [-1, 1, 3, 3, 3, 1],
+            fingers: [ 0, 1, 3, 4, 2, 1],
+            barre: { fret: 1, from: 1, to: 5 },
+            label: "A-shape",
+            note: "Barre"
+        }
+    ],
+    minor: [
+        {
+            anchorString: 0,
+            frets:   [1, 3, 3, 1, 1, 1],
+            fingers: [1, 3, 4, 1, 1, 1],
+            barre:   { fret: 1, from: 0, to: 5 },
+            label: "Em-shape",
+            note: "Barre"
+        },
+        {
+            anchorString: 1,
+            frets:   [-1, 1, 3, 3, 2, 1],
+            fingers: [ 0, 1, 3, 4, 2, 1],
+            barre:   { fret: 1, from: 1, to: 5 },
+            label: "Am-shape",
+            note: "Barre"
+        }
+    ],
+    seventh: [
+        {
+            anchorString: 0,
+            frets:   [1, 3, 1, 2, 1, 1],
+            fingers: [1, 3, 1, 2, 1, 1],
+            barre:   { fret: 1, from: 0, to: 5 },
+            label: "E7-shape",
+            note: "Barre"
+        },
+        {
+            anchorString: 1,
+            frets:   [-1, 1, 3, 1, 3, 1],
+            fingers: [ 0, 1, 3, 1, 4, 1],
+            barre:   { fret: 1, from: 1, to: 5 },
+            label: "A7-shape",
+            note: "Barre"
+        }
+    ]
+};
+
+function generateShape(template, root) {
+    const rootFret = fretForNote(root, template.anchorString);
+    const shift = rootFret - 1;
+    const frets = template.frets.map(f => (f === -1 ? -1 : f + shift));
+    const fingers = template.fingers.slice();
+    const shape = {
+        frets,
+        fingers,
+        baseFret: rootFret,
+        label: `${root} ${template.label}`,
+        note: template.note
+    };
+
+    if (template.barre) {
+        shape.barre = {
+            fret: template.barre.fret + shift,
+            from: template.barre.from,
+            to: template.barre.to
+        };
+    }
+
+    return shape;
+}
+
 const STRING_COUNT = 6;
 const FRET_ROWS = 5;
 const CELL_W = 22;
