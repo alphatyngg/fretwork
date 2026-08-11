@@ -53,6 +53,10 @@ const CHORD_TYPE_SUFFIX = {
     seventh: "7"
 };
 
+const CHORD_STATE = {
+    root: "C"
+};
+
 const STRING_COUNT = 6;
 const FRET_ROWS = 5;
 const CELL_W = 22;
@@ -214,8 +218,17 @@ function buildChords() {
     const grid = document.getElementById("chordGrid");
     grid.innerHTML = "";
 
-    const root = "C";
+    const root = CHORD_STATE.root;
     const chordTypes = CHORD_SHAPES[root];
+
+    if (!chordTypes) {
+        const msg = document.createElement("p");
+
+        msg.className = "chord-empty";
+        msg.textContent = `No shapes added for ${root} yet.`;
+        grid.appendChild(msg);
+        return;
+    }
 
     Object.keys(chordTypes).forEach(typeKey => {
         const shapes = chordTypes[typeKey];
@@ -239,4 +252,17 @@ function buildChords() {
     });
 }
 
+function wireChordRootPicker() {
+    const buttons = document.querySelectorAll("#chordRootPicker button");
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            CHORD_STATE.root = btn.textContent;
+            buttons.forEach(b => b.setAttribute("aria-pressed", "false"));
+            btn.setAttribute("aria-pressed", "true");
+            buildChords();
+        });
+    });
+}
+
+wireChordRootPicker();
 buildChords();
