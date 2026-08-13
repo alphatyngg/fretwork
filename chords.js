@@ -253,10 +253,10 @@ function generateShape(template, root) {
 const STRING_COUNT = 6;
 const FRET_ROWS = 5;
 const CELL_W = 22;
-const CELL_H = 26;
+const CELL_H = 30;
 const PAD_TOP = 26;
 const PAD_LEFT = 40;
-const DOT_R = 8.5;
+const DOT_R = 9.5;
 
 function drawChordDiagram(shape) {
     const gridW = CELL_W * (STRING_COUNT - 1);
