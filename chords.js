@@ -8,7 +8,7 @@ const CHORD_SHAPES = {
                 fingers: [0, 3, 2, 0, 1, 0],
                 baseFret: 1,
                 label: "C Open",
-                note: "Open position"
+                note: "Open Position"
             },
         ],
         seventh: [
@@ -17,7 +17,7 @@ const CHORD_SHAPES = {
                 fingers: [0, 3, 2, 4, 1, 0],
                 baseFret: 1,
                 label: "C7 Open",
-                note: "Open position"
+                note: "Open Position"
             }
         ]
     },
@@ -28,7 +28,7 @@ const CHORD_SHAPES = {
                 fingers: [0, 0, 0, 1, 3, 2],
                 baseFret: 1,
                 label: "D Open",
-                note: "Open position"
+                note: "Open Position"
             }
         ],
         minor: [
@@ -37,7 +37,7 @@ const CHORD_SHAPES = {
                 fingers: [0, 0, 0, 2, 3, 1],
                 baseFret: 1,
                 label: "Dm Open",
-                note: "Open position" }
+                note: "Open Position" }
         ],
         seventh: [
             { 
@@ -45,7 +45,7 @@ const CHORD_SHAPES = {
                 fingers: [0, 0, 0, 2, 1, 3],
                 baseFret: 1,
                 label: "D7 Open",
-                note: "Open position" }
+                note: "Open Position" }
         ]
     },
     E: {
@@ -55,7 +55,7 @@ const CHORD_SHAPES = {
                 fingers: [0, 2, 3, 1, 0, 0],
                 baseFret: 1,
                 label: "E Open",
-                note: "Open position" }
+                note: "Open Position" }
         ],
         minor: [
             { 
@@ -63,7 +63,7 @@ const CHORD_SHAPES = {
                 fingers: [0, 2, 3, 0, 0, 0],
                 baseFret: 1,
                 label: "Em Open",
-                note: "Open position" }
+                note: "Open Position" }
         ],
         seventh: [
             { 
@@ -71,7 +71,7 @@ const CHORD_SHAPES = {
                 fingers: [0, 2, 0, 1, 0, 0],
                 baseFret: 1,
                 label: "E7 Open",
-                note: "Open position" }
+                note: "Open Position" }
         ]
     },
     G: {
@@ -81,7 +81,7 @@ const CHORD_SHAPES = {
                 fingers: [2, 1, 0, 0, 0, 3],
                 baseFret: 1,
                 label: "G Open",
-                note: "Open position" }
+                note: "Open Position" }
         ],
         seventh: [
             { 
@@ -89,7 +89,7 @@ const CHORD_SHAPES = {
                 fingers: [3, 2, 0, 0, 0, 1],
                 baseFret: 1,
                 label: "G7 Open",
-                note: "Open position" }
+                note: "Open Position" }
         ]
     },
     A: {
@@ -99,7 +99,7 @@ const CHORD_SHAPES = {
                 fingers: [0, 0, 1, 2, 3, 0],
                 baseFret: 1,
                 label: "A Open",
-                note: "Open position" }
+                note: "Open Position" }
         ],
         minor: [
             { 
@@ -107,7 +107,7 @@ const CHORD_SHAPES = {
                 fingers: [0, 0, 2, 3, 1, 0],
                 baseFret: 1,
                 label: "Am Open",
-                note: "Open position" }
+                note: "Open Position" }
         ],
         seventh: [
             { 
@@ -115,7 +115,7 @@ const CHORD_SHAPES = {
                 fingers: [0, 0, 2, 0, 3, 0],
                 baseFret: 1,
                 label: "A7 Open",
-                note: "Open position" }
+                note: "Open Position" }
         ]
     }
 };
@@ -168,6 +168,14 @@ const MOVABLE_SHAPES = {
             barre: { fret: 1, from: 1, to: 5 },
             label: "A-shape",
             note: "Barre"
+        },
+        {
+            anchorString: 1,
+            templateFret: 5,        // root at fret 5 (D example)
+            frets:   [-1, 5, 4, 2, 3, -1],
+            fingers: [ 0, 4, 3, 1, 2, 0],
+            label: "C-shape",
+            note: "Advanced Voicing"
         }
     ],
     minor: [
@@ -210,13 +218,23 @@ const MOVABLE_SHAPES = {
 
 function generateShape(template, root) {
     const rootFret = fretForNote(root, template.anchorString);
-    const shift = rootFret - 1;
-    const frets = template.frets.map(f => (f === -1 ? -1 : f + shift));
+    const base = template.templateFret || 1;            // default to 1 for E/A shapes
+    const shift = rootFret - base;
+
+    let frets = template.frets.map(f => (f === -1 ? null : f + shift));
+    if (frets.some(f => f !== null && f < 1)) {
+        frets = frets.map(f => (f === null ? null : f + 12));
+    }
+    frets = frets.map(f => (f === null ? -1 : f));
+
     const fingers = template.fingers.slice();
+    const fretted = frets.filter(f => f > 0);
+    const baseFret = fretted.length ? Math.min(...fretted) : 1;
+
     const shape = {
         frets,
         fingers,
-        baseFret: rootFret,
+        baseFret,
         label: `${root} ${template.label}`,
         note: template.note
     };
