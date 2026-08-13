@@ -10,24 +10,6 @@ const CHORD_SHAPES = {
                 label: "C Open",
                 note: "Open position"
             },
-            {
-                frets: [-1, 3, 5, 5, 5, 3],
-                fingers: [0, 1, 3, 4, 2, 1],
-                baseFret: 3,
-                barre: { fret: 3, from: 1, to: 5},
-                label: "C Barre",
-                note: "A-shape barre"
-            }
-        ],
-        minor: [
-            {
-                frets: [-1, 3, 5, 5, 4, 3],
-                fingers: [0, 1, 3, 4, 2, 1],
-                baseFret: 3,
-                barre: { fret: 3, from: 1, to: 5},
-                label: "Cm Barre",
-                note: "Am-shape barre"
-            }
         ],
         seventh: [
             {
@@ -158,7 +140,7 @@ const FRET_ROWS = 5;
 const CELL_W = 22;
 const CELL_H = 26;
 const PAD_TOP = 26;
-const PAD_LEFT = 22;
+const PAD_LEFT = 40;
 const DOT_R = 8.5;
 
 function drawChordDiagram(shape) {
@@ -210,7 +192,7 @@ function drawChordDiagram(shape) {
     if (shape.baseFret > 1) {
         const label = document.createElementNS(SVG_NS, "text");
 
-        label.setAttribute("x", x0 - 6);
+        label.setAttribute("x", x0 - 12);
         label.setAttribute("y", y0 + CELL_H / 2 + 4);
         label.setAttribute("text-anchor", "end");
         label.setAttribute("font-family", "var(--font-mono)");
@@ -310,26 +292,36 @@ function drawChordCard(shape) {
     return card;
 }
 
+function shapesFor(root, typeKey) {
+    const shapes = [];
+    const openShapes = CHORD_SHAPES[root] && CHORD_SHAPES[root][typeKey];
+
+    if (openShapes) {
+        shapes.push(...openShapes);
+    }
+
+    const templates = MOVABLE_SHAPES[typeKey];
+
+    if (templates) {
+        templates.forEach(t => shapes.push(generateShape(t, root)));
+    }
+
+    return shapes;
+}
+
 function buildChords() {
     const grid = document.getElementById("chordGrid");
     grid.innerHTML = "";
 
     const root = CHORD_STATE.root;
-    const chordTypes = CHORD_SHAPES[root];
+    const typeKeys = Object.keys(CHORD_TYPE_NAMES);
 
-    if (!chordTypes) {
-        const msg = document.createElement("p");
+    typeKeys.forEach(typeKey => {
+        const shapes = shapesFor(root, typeKey);
+        if (shapes.length === 0) return;
 
-        msg.className = "chord-empty";
-        msg.textContent = `No shapes added for ${root} yet.`;
-        grid.appendChild(msg);
-        return;
-    }
-
-    Object.keys(chordTypes).forEach(typeKey => {
-        const shapes = chordTypes[typeKey];
         const row = document.createElement("div");
-        
+
         row.className = "chord-row";
 
         const heading = document.createElement("h3");
@@ -339,7 +331,7 @@ function buildChords() {
         row.appendChild(heading);
 
         const cards = document.createElement("div");
-        
+
         cards.className = "chord-cards";
         shapes.forEach(shape => cards.appendChild(drawChordCard(shape)));
         row.appendChild(cards);
