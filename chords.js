@@ -20,6 +20,103 @@ const CHORD_SHAPES = {
                 note: "Open position"
             }
         ]
+    },
+    D: {
+        major: [
+            { 
+                frets: [-1, -1, 0, 2, 3, 2],
+                fingers: [0, 0, 0, 1, 3, 2],
+                baseFret: 1,
+                label: "D Open",
+                note: "Open position"
+            }
+        ],
+        minor: [
+            { 
+                frets: [-1, -1, 0, 2, 3, 1],
+                fingers: [0, 0, 0, 2, 3, 1],
+                baseFret: 1,
+                label: "Dm Open",
+                note: "Open position" }
+        ],
+        seventh: [
+            { 
+                frets: [-1, -1, 0, 2, 1, 2],
+                fingers: [0, 0, 0, 2, 1, 3],
+                baseFret: 1,
+                label: "D7 Open",
+                note: "Open position" }
+        ]
+    },
+    E: {
+        major: [
+            { 
+                frets: [0, 2, 2, 1, 0, 0],
+                fingers: [0, 2, 3, 1, 0, 0],
+                baseFret: 1,
+                label: "E Open",
+                note: "Open position" }
+        ],
+        minor: [
+            { 
+                frets: [0, 2, 2, 0, 0, 0],
+                fingers: [0, 2, 3, 0, 0, 0],
+                baseFret: 1,
+                label: "Em Open",
+                note: "Open position" }
+        ],
+        seventh: [
+            { 
+                frets: [0, 2, 0, 1, 0, 0],
+                fingers: [0, 2, 0, 1, 0, 0],
+                baseFret: 1,
+                label: "E7 Open",
+                note: "Open position" }
+        ]
+    },
+    G: {
+        major: [
+            { 
+                frets: [3, 2, 0, 0, 0, 3],
+                fingers: [2, 1, 0, 0, 0, 3],
+                baseFret: 1,
+                label: "G Open",
+                note: "Open position" }
+        ],
+        seventh: [
+            { 
+                frets: [3, 2, 0, 0, 0, 1],
+                fingers: [3, 2, 0, 0, 0, 1],
+                baseFret: 1,
+                label: "G7 Open",
+                note: "Open position" }
+        ]
+    },
+    A: {
+        major: [
+            { 
+                frets: [-1, 0, 2, 2, 2, 0],
+                fingers: [0, 0, 1, 2, 3, 0],
+                baseFret: 1,
+                label: "A Open",
+                note: "Open position" }
+        ],
+        minor: [
+            { 
+                frets: [-1, 0, 2, 2, 1, 0],
+                fingers: [0, 0, 2, 3, 1, 0],
+                baseFret: 1,
+                label: "Am Open",
+                note: "Open position" }
+        ],
+        seventh: [
+            { 
+                frets: [-1, 0, 2, 0, 2, 0],
+                fingers: [0, 0, 2, 0, 3, 0],
+                baseFret: 1,
+                label: "A7 Open",
+                note: "Open position" }
+        ]
     }
 };
 
